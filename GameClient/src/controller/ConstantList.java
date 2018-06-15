@@ -6,7 +6,8 @@ import java.awt.Font;
 public class ConstantList {
 	
 	public static final String APP_NAME = "Game";
-	public static final String APP_ICON = "/data/appIcon.png";
+	public static final String APP_ICON = "/data/player.png";
+	public static final String PLAYER_IMG = "/data/player.png";
 	public static final Color APP_COLOR = Color.decode("#F7C600");
 	public static final int WIDTH_FRAME = 600;
 	public static final int HEIGHT_FRAME = 700;
@@ -21,4 +22,8 @@ public class ConstantList {
 	public static final String GET_PORT = "Ingrese el puerto";
 	public static final String PORT_ERROR = "Puerto invalido";
 	public static final String OUT_CONN = "Sin conexión";
+	
+	public static final int LIFE = 100;
+	public static final int LESS_LIFE = 5;
+	public static final int MOVE_UNIT = 10;
 }

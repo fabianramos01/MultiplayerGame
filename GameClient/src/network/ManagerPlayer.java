@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.net.Socket;
 
 import controller.ConstantList;
+import model.Area;
+import model.Direction;
 import model.MyThread;
 import model.Player;
 
@@ -22,6 +24,7 @@ public class ManagerPlayer extends MyThread {
 		socket = new Socket(ip, port);
 		output = new DataOutputStream(socket.getOutputStream());
 		input = new DataInputStream(socket.getInputStream());
+		player = new Player("", new Area(0, 0, 1000, 1000), null, null);
 		start();
 	}
 
@@ -43,6 +46,10 @@ public class ManagerPlayer extends MyThread {
 				
 			}
 		}
+	}
+	
+	public void move(Direction direction) {
+		player.move(direction);
 	}
 	
 	@Override

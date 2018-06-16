@@ -5,15 +5,18 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 
+import controller.ICObservable;
+import controller.ICObserver;
 import model.MyThread;
 
-public class Server extends MyThread implements IObserver{
+public class Server extends MyThread implements IObserver, ICObservable{
 
 	private static final String SERVER = "Servidor";
 	private static final int SLEEP = 1000;
 	private ServerSocket serverSocket;
 	private ArrayList<Connection> connections;
 	private Socket socket;
+	private ICObserver icObserver;
 
 	public Server(int port) throws IOException {
 		super(SERVER, SLEEP);
@@ -31,6 +34,7 @@ public class Server extends MyThread implements IObserver{
 			Connection connection = new Connection(socket);
 			connection.addObserver(this);
 			connections.add(connection);
+			icObserver.update();
 		} catch (IOException e) {
 			System.err.println(e.getMessage());
 		}
@@ -43,5 +47,15 @@ public class Server extends MyThread implements IObserver{
 				connection.sendMessage(message);
 			}
 		}
+	}
+
+	@Override
+	public void addObserver(ICObserver icObserver) {
+		this.icObserver = icObserver;
+	}
+
+	@Override
+	public void removeObserver() {
+		icObserver = null;
 	}
 }

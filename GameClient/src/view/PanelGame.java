@@ -1,6 +1,7 @@
 package view;
 
 import java.awt.Graphics;
+import java.awt.event.KeyListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
@@ -14,9 +15,12 @@ public class PanelGame extends JPanel {
 	private ImageIcon imagePlayer;
 	private Area area;
 	
-	public PanelGame(Area area) {
+	public PanelGame(KeyListener keyListener, Area area) {
 		this.area = area;
-		imagePlayer = new ImageIcon(ConstantList.PLAYER_IMG);
+		addKeyListener(keyListener);
+		setFocusable(true);
+		imagePlayer = new ImageIcon(getClass().getResource(ConstantList.PLAYER_IMG));
+		repaint();
 	}
 	
 	@Override

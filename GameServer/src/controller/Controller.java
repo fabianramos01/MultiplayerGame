@@ -15,7 +15,6 @@ public class Controller implements ICObserver {
 		int port = Integer.parseInt(JOptionPane.showInputDialog(ConstantList.GET_PORT));
 		try {
 			server = new Server(port);
-			server.addObserver(this);
 		} catch (IOException e) {
 			JOptionPane.showMessageDialog(null, e.getMessage(), ConstantList.ERROR, JOptionPane.ERROR_MESSAGE);
 		}

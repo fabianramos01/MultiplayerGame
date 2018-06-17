@@ -5,23 +5,21 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 
-import controller.ICObservable;
-import controller.ICObserver;
 import model.MyThread;
 
-public class Server extends MyThread implements IObserver, ICObservable{
+public class Server extends MyThread{
 
 	private static final String SERVER = "Servidor";
 	private static final int SLEEP = 1000;
 	private ServerSocket serverSocket;
-	private ArrayList<Connection> connections;
+	private ArrayList<Game> games;
 	private Socket socket;
-	private ICObserver icObserver;
 
 	public Server(int port) throws IOException {
 		super(SERVER, SLEEP);
 		serverSocket = new ServerSocket(port);
-		connections = new ArrayList<>();
+		games = new ArrayList<>();
+		games.add(new Game());
 		System.out.println("Server create at port " + port);
 		start();
 	}
@@ -30,32 +28,20 @@ public class Server extends MyThread implements IObserver, ICObservable{
 	public void execute() {
 		try {
 			socket = serverSocket.accept();
-			System.out.println("New connection!");
-			Connection connection = new Connection(socket);
-			connection.addObserver(this);
-			connections.add(connection);
-			icObserver.update();
+			System.out.println("New connection!" + socket.getInetAddress());
+			addToGame(socket);
 		} catch (IOException e) {
 			System.err.println(e.getMessage());
 		}
 	}
-
-	@Override
-	public void update(String name, String message) {
-		for (Connection connection : connections) {
-			if (!connection.getText().equals(name)) {
-				connection.sendMessage(message);
-			}
+	
+	private void addToGame(Socket socket) {
+		if (games.get(games.size()-1).getSize() < ConstantList.PLAYER_LIM) {
+			games.get(games.size()-1).addConnection(socket);
+		} else {
+			Game game = new Game();
+			game.addConnection(socket);
+			games.add(game);
 		}
-	}
-
-	@Override
-	public void addObserver(ICObserver icObserver) {
-		this.icObserver = icObserver;
-	}
-
-	@Override
-	public void removeObserver() {
-		icObserver = null;
 	}
 }

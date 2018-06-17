@@ -13,25 +13,22 @@ import model.Direction;
 import network.ManagerPlayer;
 import view.FrameHome;
 
-public class Controller implements ActionListener, KeyListener {
+public class Controller implements ActionListener, KeyListener, IObserver {
 
 	private ManagerPlayer managerPlayer;
 	private FrameHome frameHome;
-	private Timer timer;
 
 	public Controller() {
 		frameHome = new FrameHome(this);
 		connect();
-		startTimer();
 	}
-
+	
 	private void startTimer() {
-		timer = new Timer(ConstantList.TIMER_TIME, new ActionListener() {
-
+		Timer timer = new Timer(100, new ActionListener() {
+			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (managerPlayer != null) {
-				}
+				frameHome.paintUsers();
 			}
 		});
 		timer.start();
@@ -44,16 +41,18 @@ public class Controller implements ActionListener, KeyListener {
 		if (!port.equals("")) {
 			newPlayer(ip, Integer.parseInt(port));
 		} else {
-			JOptionPane.showMessageDialog(null, ConstantList.PORT_ERROR, ConstantList.ERROR,
-					JOptionPane.ERROR_MESSAGE);			
-		}	
+			JOptionPane.showMessageDialog(null, ConstantList.PORT_ERROR, ConstantList.ERROR, JOptionPane.ERROR_MESSAGE);
+		}
 		frameHome.setVisible(true);
 	}
-	
+
 	private void newPlayer(String ip, int port) {
 		try {
-			managerPlayer = new ManagerPlayer(ip, port);
-			frameHome.init(managerPlayer.getPlayer());
+			String name = JOptionPane.showInputDialog(ConstantList.USER_NAME);
+			managerPlayer = new ManagerPlayer(ip, port, name, frameHome.getWidth(), frameHome.getHeight());
+			managerPlayer.addObserver(this);
+			frameHome.init(managerPlayer.getPlayer(), managerPlayer.getUsers());
+			startTimer();
 		} catch (IOException e) {
 			JOptionPane.showMessageDialog(null, ConstantList.CONNECTION_ERROR, ConstantList.ERROR,
 					JOptionPane.ERROR_MESSAGE);
@@ -72,24 +71,35 @@ public class Controller implements ActionListener, KeyListener {
 		}
 	}
 
+	private void movePlayer(int keycode) {
+		if (keycode == KeyEvent.VK_UP) {
+			managerPlayer.move(Direction.UP);
+		} else if (keycode == KeyEvent.VK_DOWN) {
+			managerPlayer.move(Direction.DOWN);
+		} else if (keycode == KeyEvent.VK_RIGHT) {
+			managerPlayer.move(Direction.RIGHT);
+		} else if (keycode == KeyEvent.VK_LEFT) {
+			managerPlayer.move(Direction.LEFT);
+		}
+		frameHome.paintUsers();
+	}
+
 	@Override
 	public void keyPressed(KeyEvent arg0) {
+		movePlayer(arg0.getKeyCode());
 	}
 
 	@Override
 	public void keyReleased(KeyEvent arg0) {
-		if (arg0.getKeyCode() == KeyEvent.VK_UP) {
-			managerPlayer.move(Direction.UP);
-		} else if (arg0.getKeyCode() == KeyEvent.VK_DOWN) {			
-			managerPlayer.move(Direction.DOWN);
-		} else if (arg0.getKeyCode() == KeyEvent.VK_RIGHT) {
-			managerPlayer.move(Direction.RIGHT);
-		} else if (arg0.getKeyCode() == KeyEvent.VK_LEFT) {
-			managerPlayer.move(Direction.LEFT);
-		}
+		movePlayer(arg0.getKeyCode());
 	}
 
 	@Override
 	public void keyTyped(KeyEvent arg0) {
+	}
+
+	@Override
+	public void updateUsers() {
+		frameHome.paintUsers();
 	}
 }

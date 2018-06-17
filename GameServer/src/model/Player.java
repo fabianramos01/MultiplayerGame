@@ -2,7 +2,7 @@ package model;
 
 import java.util.ArrayList;
 
-import controller.ConstantList;
+import network.ConstantList;
 
 public class Player {
 
@@ -27,11 +27,6 @@ public class Player {
 	
 	public void lessLife() {
 		life-= ConstantList.LESS_LIFE;
-	}
-	
-	
-	public void move(Direction direction) {
-		 area.move(direction);
 	}
 	
 	public String getName() {

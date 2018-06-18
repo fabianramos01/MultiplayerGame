@@ -2,5 +2,5 @@ package network;
 
 public enum Response {
 
-	PLAYERS_INFO;
+	START_GAME, PLAYERS_INFO;
 }

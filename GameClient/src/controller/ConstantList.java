@@ -8,6 +8,7 @@ public class ConstantList {
 	public static final String APP_NAME = "Game";
 	public static final String APP_ICON = "/data/appIcon.png";
 	public static final String PLAYER_IMG = "/data/ship1.png";
+	public static final String LOAD_IMG = "/data/load1.gif";
 	public static final Color APP_COLOR = Color.decode("#F7C600");
 	public static final int WIDTH_FRAME = 700;
 	public static final int HEIGHT_FRAME = 700;

@@ -82,6 +82,14 @@ public class Connection extends MyThread implements IObservable {
 		fInputStream.read(array);
 		fInputStream.close();
 	}
+	
+	public void startMessage() {
+		try {
+			output.writeUTF(Response.START_GAME.toString());
+		} catch (IOException e) {
+			System.err.println(e.getMessage());
+		}
+	}
 
 	@Override
 	public void execute() {
@@ -99,7 +107,6 @@ public class Connection extends MyThread implements IObservable {
 	}
 
 	private void advise() {
-		iObserver.update(player.getName());
 		iObserver.addPlayer(this);
 	}
 
@@ -116,4 +123,5 @@ public class Connection extends MyThread implements IObservable {
 	public Player getPlayer() {
 		return player;
 	}
+
 }

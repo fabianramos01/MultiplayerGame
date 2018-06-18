@@ -43,15 +43,14 @@ public class Controller implements ActionListener, KeyListener, IObserver {
 		} else {
 			JOptionPane.showMessageDialog(null, ConstantList.PORT_ERROR, ConstantList.ERROR, JOptionPane.ERROR_MESSAGE);
 		}
-		frameHome.setVisible(true);
 	}
 
 	private void newPlayer(String ip, int port) {
 		try {
 			String name = JOptionPane.showInputDialog(ConstantList.USER_NAME);
 			managerPlayer = new ManagerPlayer(ip, port, name, frameHome.getWidth(), frameHome.getHeight());
-			frameHome.init(managerPlayer.getPlayer(), managerPlayer.getUsers());
-			startTimer();
+			managerPlayer.addObserver(this);
+			frameHome.showDialog();
 		} catch (IOException e) {
 			JOptionPane.showMessageDialog(null, ConstantList.CONNECTION_ERROR, ConstantList.ERROR,
 					JOptionPane.ERROR_MESSAGE);
@@ -98,7 +97,8 @@ public class Controller implements ActionListener, KeyListener, IObserver {
 	}
 
 	@Override
-	public void updateUsers() {
-		frameHome.paintUsers();
+	public void startGame() {
+		frameHome.init(managerPlayer.getPlayer(), managerPlayer.getUsers());
+		startTimer();
 	}
 }

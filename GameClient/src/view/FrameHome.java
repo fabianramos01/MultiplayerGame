@@ -4,7 +4,9 @@ import java.awt.BorderLayout;
 import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 
 import controller.ConstantList;
 import controller.Controller;
@@ -16,6 +18,7 @@ public class FrameHome extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private Controller listener;
 	private PanelGame panelGame;
+	private JDialog dialogLoad;
 
 	public FrameHome(Controller listener) {
 		this.listener = listener;
@@ -26,9 +29,22 @@ public class FrameHome extends JFrame {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setLocationRelativeTo(null);
 		setResizable(false);
+		setVisible(true);
+	}
+	
+	public void showDialog() {
+		dialogLoad = new JDialog();
+		dialogLoad.setUndecorated(true);
+		dialogLoad.setLocationRelativeTo(this);
+		ImageIcon image = new ImageIcon(getClass().getResource(ConstantList.LOAD_IMG));
+		dialogLoad.setSize(image.getIconWidth(), image.getIconHeight());
+		JLabel label = new JLabel(image);
+		dialogLoad.add(label);
+		dialogLoad.setVisible(true);
 	}
 
 	public void init(Player player, ArrayList<User> users) {
+		dialogLoad.setVisible(false);
 		panelGame = new PanelGame(listener, player.getArea(), users);
 		add(panelGame, BorderLayout.CENTER);
 		setJMenuBar(new MenuBarUser(listener));

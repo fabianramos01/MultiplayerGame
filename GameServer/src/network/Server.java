@@ -50,10 +50,6 @@ public class Server extends MyThread implements IObserver{
 	}
 
 	@Override
-	public void update(String name) {
-	}
-
-	@Override
 	public void addPlayer(Connection connection) {
 		addToGame(connection);
 		connections.remove(connection);

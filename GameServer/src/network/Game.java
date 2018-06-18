@@ -18,10 +18,13 @@ public class Game extends MyThread implements IObserver {
 	}
 
 	public void addConnection(Connection connection) {
-		System.out.println(connection.getPlayer().getName() + "- Game " + gameNum);
+		System.out.println(connection.getPlayer().getName() + " - Game " + gameNum);
 		connection.addObserver(this);
 		connections.add(connection);
 		if (connections.size() == ConstantList.PLAYER_LIM) {
+			for (Connection actual : connections) {
+				actual.startMessage();
+			}
 			start();
 		}
 		sockets++;
@@ -44,14 +47,9 @@ public class Game extends MyThread implements IObserver {
 
 	@Override
 	public void execute() {
-		for (Connection connection : connections) {
-			sendUsers(connection);
+		for (int i = 0; i < connections.size(); i++) {			
+			sendUsers(connections.get(i));
 		}
-	}
-
-	@Override
-	public void update(String name) {
-		System.out.println(name);
 	}
 
 	@Override

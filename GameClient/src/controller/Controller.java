@@ -50,7 +50,6 @@ public class Controller implements ActionListener, KeyListener, IObserver {
 		try {
 			String name = JOptionPane.showInputDialog(ConstantList.USER_NAME);
 			managerPlayer = new ManagerPlayer(ip, port, name, frameHome.getWidth(), frameHome.getHeight());
-			managerPlayer.addObserver(this);
 			frameHome.init(managerPlayer.getPlayer(), managerPlayer.getUsers());
 			startTimer();
 		} catch (IOException e) {

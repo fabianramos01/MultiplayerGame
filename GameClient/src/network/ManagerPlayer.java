@@ -9,8 +9,6 @@ import java.net.Socket;
 import java.util.ArrayList;
 
 import controller.ConstantList;
-import controller.IObservable;
-import controller.IObserver;
 import model.Area;
 import model.Direction;
 import model.MyThread;
@@ -18,14 +16,13 @@ import model.Player;
 import model.User;
 import persistence.FileManager;
 
-public class ManagerPlayer extends MyThread implements IObservable {
+public class ManagerPlayer extends MyThread {
 
 	private Socket socket;
 	private DataOutputStream output;
 	private DataInputStream input;
 	private Player player;
 	private ArrayList<User> users;
-	private IObserver iObserver;
 
 	public ManagerPlayer(String ip, int port, String name, int width, int height) throws IOException {
 		super("", ConstantList.SLEEP);
@@ -126,11 +123,5 @@ public class ManagerPlayer extends MyThread implements IObservable {
 
 	public ArrayList<User> getUsers() {
 		return users;
-	}
-
-	@Override
-	public void addObserver(IObserver iObserver) {
-		this.iObserver = iObserver;
-
 	}
 }

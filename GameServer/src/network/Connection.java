@@ -25,7 +25,6 @@ public class Connection extends MyThread implements IObservable {
 
 	public Connection(Socket socket) {
 		super(String.valueOf(count++), ConstantList.GAME_SLEEP);
-		System.out.println(count);
 		this.socket = socket;
 		try {
 			input = new DataInputStream(this.socket.getInputStream());
@@ -101,7 +100,7 @@ public class Connection extends MyThread implements IObservable {
 
 	private void advise() {
 		iObserver.update(player.getName());
-		iObserver.addConnection(this);
+		iObserver.addPlayer(this);
 	}
 
 	@Override

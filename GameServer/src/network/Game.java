@@ -1,6 +1,5 @@
 package network;
 
-import java.net.Socket;
 import java.util.ArrayList;
 
 import model.MyThread;
@@ -18,9 +17,13 @@ public class Game extends MyThread implements IObserver {
 		connections = new ArrayList<>();
 	}
 
-	public void addConnection(Socket socket) {
-		Connection connection = new Connection(socket);
+	public void addConnection(Connection connection) {
+		System.out.println(connection.getPlayer().getName() + "- Game " + gameNum);
 		connection.addObserver(this);
+		connections.add(connection);
+		if (connections.size() == ConstantList.PLAYER_LIM) {
+			start();
+		}
 		sockets++;
 	}
 
@@ -57,10 +60,6 @@ public class Game extends MyThread implements IObserver {
 	}
 
 	@Override
-	public void addConnection(Connection connection) {
-		connections.add(connection);
-		if (connections.size() == ConstantList.PLAYER_LIM) {
-			start();
-		}
+	public void addPlayer(Connection connection) {
 	}
 }

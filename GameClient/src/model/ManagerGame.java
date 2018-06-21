@@ -42,6 +42,31 @@ public class ManagerGame {
 			}
 		}
 	}
+	
+	public void loadShoots(ArrayList<Shoot> shootList) {
+		if (shoots.isEmpty()) {
+			for (Shoot shoot : shootList) {
+				shoots.add(shoot);
+			}
+		} else {
+			for (int i = 0; i < shootList.size(); i++) {
+				if (!setInfoShoot(shootList.get(i), shootList)) {
+					shoots.remove(shootList.get(i));
+				}
+			}
+		}
+	}
+
+	private boolean setInfoShoot(Shoot shoot, ArrayList<Shoot> shootList) {
+		for (Shoot actual : shootList) {
+			if (actual.getId() == shoot.getId()) {
+				actual.setX(shoot.getX());
+				actual.setY(shoot.getY());
+				return true;
+			}
+		}
+		return false;
+	}
 
 	public Player getPlayer() {
 		return player;

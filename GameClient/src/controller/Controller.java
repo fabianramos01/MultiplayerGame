@@ -12,6 +12,7 @@ import javax.swing.Timer;
 
 import model.Direction;
 import model.ManagerGame;
+import model.Shoot;
 import model.User;
 import network.Client;
 import view.FrameHome;
@@ -21,6 +22,7 @@ public class Controller implements ActionListener, KeyListener, IObserver {
 	private Client client;
 	private ManagerGame managerGame;
 	private FrameHome frameHome;
+	private Timer timer;
 
 	public Controller() {
 		frameHome = new FrameHome(this);
@@ -28,11 +30,11 @@ public class Controller implements ActionListener, KeyListener, IObserver {
 	}
 
 	private void startTimer() {
-		Timer timer = new Timer(100, new ActionListener() {
+		timer = new Timer(ConstantList.SLEEP, new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				frameHome.paintUsers();
+				frameHome.paintGame();
 			}
 		});
 		timer.start();
@@ -69,8 +71,6 @@ public class Controller implements ActionListener, KeyListener, IObserver {
 			break;
 		case COMMAND_SIGN_IN:
 			break;
-		default:
-			break;
 		}
 	}
 
@@ -83,9 +83,10 @@ public class Controller implements ActionListener, KeyListener, IObserver {
 			managerGame.move(Direction.RIGHT);
 		} else if (keycode == KeyEvent.VK_LEFT) {
 			managerGame.move(Direction.LEFT);
+		} else if (keycode == KeyEvent.VK_SPACE) {
+			client.createShoot(managerGame.getPlayer().getArea().getX(), managerGame.getPlayer().getArea().getY());
 		}
 		client.sendMove(managerGame.getPlayer().getArea().getX(), managerGame.getPlayer().getArea().getY());
-		frameHome.paintUsers();
 	}
 
 	@Override
@@ -104,12 +105,17 @@ public class Controller implements ActionListener, KeyListener, IObserver {
 
 	@Override
 	public void startGame() {
-		frameHome.init(managerGame.getPlayer(), managerGame.getUsers());
+		frameHome.init(managerGame.getPlayer(), managerGame.getUsers(), managerGame.getShoots());
 		startTimer();
 	}
 
 	@Override
 	public void loadUsers(ArrayList<User> users) {
 		managerGame.loadUsers(users);
+	}
+
+	@Override
+	public void loadShoots(ArrayList<Shoot> shoots) {
+		managerGame.loadShoots(shoots);
 	}
 }

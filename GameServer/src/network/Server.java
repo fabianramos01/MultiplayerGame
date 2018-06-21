@@ -58,4 +58,8 @@ public class Server extends MyThread implements IObserver{
 	@Override
 	public void removeConnection(Connection connection) {
 	}
+
+	@Override
+	public void createShoot(int x, int y) {
+	}
 }

@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import model.Area;
 import model.MyThread;
 import model.Player;
+import model.Shoot;
 import model.User;
 import persistence.FileManager;
 
@@ -45,7 +46,8 @@ public class Connection extends MyThread implements IObservable {
 		case MOVE_PLAYER:
 			setPosition();
 			break;
-		default:
+		case CREATE_SHOOT:
+			iObserver.createShoot(input.readInt(), input.readInt());
 			break;
 		}
 	}
@@ -60,21 +62,35 @@ public class Connection extends MyThread implements IObservable {
 				new Area(input.readInt(), input.readInt(), input.readInt(), input.readInt()));
 		advise();
 	}
-	
+
 	public void sendPlayers(ArrayList<User> players) {
 		try {
 			output.writeUTF(Response.PLAYERS_INFO.toString());
 			FileManager.saveFile(player.getName() + ConstantList.XML, players);
-			File file = new File(player.getName() + ConstantList.XML);
-			byte[] array = new byte[(int) file.length()];
-			readFileBytes(file, array);
-			output.writeUTF(file.getName());
-			output.writeInt(array.length);
-			output.write(array);
-			file.delete();
+			sendFile(new File(player.getName() + ConstantList.XML));
 		} catch (IOException e) {
 			System.err.println(e.getMessage());
 		}
+	}
+
+	public void sendShoots(ArrayList<Shoot> shoots) {
+		try {
+			output.writeUTF(Response.SHOOTS_INFO.toString());
+			FileManager.saveShootFile(player.getName() + ConstantList.SHOOT + ConstantList.XML, shoots);
+			sendFile(new File(player.getName() + ConstantList.SHOOT + ConstantList.XML));
+		} catch (IOException e) {
+			System.err.println(e.getMessage());
+		}
+
+	}
+
+	private void sendFile(File file) throws IOException {
+		byte[] array = new byte[(int) file.length()];
+		readFileBytes(file, array);
+		output.writeUTF(file.getName());
+		output.writeInt(array.length);
+		output.write(array);
+		file.delete();
 	}
 
 	private void readFileBytes(File file, byte[] array) throws IOException {
@@ -82,7 +98,7 @@ public class Connection extends MyThread implements IObservable {
 		fInputStream.read(array);
 		fInputStream.close();
 	}
-	
+
 	public void startMessage() {
 		try {
 			output.writeUTF(Response.START_GAME.toString());
@@ -119,7 +135,7 @@ public class Connection extends MyThread implements IObservable {
 	public void removeObserver(IObserver observer) {
 		iObserver = null;
 	}
-	
+
 	public Player getPlayer() {
 		return player;
 	}

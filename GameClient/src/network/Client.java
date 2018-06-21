@@ -6,14 +6,12 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.Socket;
-import java.util.ArrayList;
 
 import controller.ConstantList;
 import controller.IObservable;
 import controller.IObserver;
 import model.MyThread;
 import model.Player;
-import model.User;
 import persistence.FileManager;
 
 public class Client extends MyThread implements IObservable{
@@ -22,6 +20,7 @@ public class Client extends MyThread implements IObservable{
 	private DataOutputStream output;
 	private DataInputStream input;
 	private IObserver iObserver;
+	
 
 	public Client(String ip, int port, Player player) throws IOException {
 		super("", ConstantList.SLEEP);
@@ -50,22 +49,31 @@ public class Client extends MyThread implements IObservable{
 		case START_GAME:
 			iObserver.startGame();
 			break;
+		case SHOOTS_INFO:
+			getShootsFile();
+			break;
 		}
+	}
+
+	private void getShootsFile() throws IOException {
+		File file = new File(input.readUTF());
+		readFile(file);
+		iObserver.loadShoots(FileManager.loadShoots(file));;
+		file.delete();
 	}
 
 	private void getUsersInfo() throws IOException {
 		File file = new File(input.readUTF());
+		readFile(file);
+		iObserver.loadUsers(FileManager.loadUsers(file));
+		file.delete();
+	}
+	
+	private void readFile(File file) throws IOException {
 		byte[] fileArray = new byte[input.readInt()];
 		input.readFully(fileArray);
-		writeFile(file, fileArray);
-		ArrayList<User> players = FileManager.loadUsers(file);
-		file.delete();
-		iObserver.loadUsers(players);
-	}
-
-	private void writeFile(File file, byte[] array) throws IOException {
 		FileOutputStream fOutputStream = new FileOutputStream(file);
-		fOutputStream.write(array);
+		fOutputStream.write(fileArray);
 		fOutputStream.close();
 	}
 
@@ -96,5 +104,15 @@ public class Client extends MyThread implements IObservable{
 	@Override
 	public void addObserver(IObserver iObserver) {
 		this.iObserver = iObserver;
+	}
+
+	public void createShoot(int x, int y) {
+		try {
+			output.writeUTF(Request.CREATE_SHOOT.toString());
+			output.writeInt(x);
+			output.writeInt(y);
+		} catch (IOException e) {
+			System.err.println(e.getMessage());
+		}
 	}
 }

@@ -11,6 +11,7 @@ import javax.swing.JLabel;
 import controller.ConstantList;
 import controller.Controller;
 import model.Player;
+import model.Shoot;
 import model.User;
 
 public class FrameHome extends JFrame {
@@ -42,16 +43,17 @@ public class FrameHome extends JFrame {
 		dialogLoad.setVisible(true);
 	}
 
-	public void init(Player player, ArrayList<User> users) {
+	public void init(Player player, ArrayList<User> users, ArrayList<Shoot> shoots) {
 		dialogLoad.setVisible(false);
-		panelGame = new PanelGame(listener, player.getArea(), users);
+		panelGame = new PanelGame(listener, player.getArea(), users, shoots);
 		add(panelGame, BorderLayout.CENTER);
 		setJMenuBar(new MenuBarUser(listener));
 		setVisible(true);
 	}
 	
-	public void paintUsers() {
+	public void paintGame() {
 		panelGame.repaint();
+		revalidate();
 	}
 
 //	SwingUtilities.updateComponentTreeUI(this);		

@@ -4,17 +4,21 @@ import java.util.ArrayList;
 
 import model.MyThread;
 import model.Player;
+import model.Shoot;
 import model.User;
 
 public class Game extends MyThread implements IObserver {
 
 	public static int gameNum = 0;
+	public int shootNum;
 	private ArrayList<Connection> connections;
+	private ArrayList<Shoot> shoots;
 	private int sockets;
 
 	public Game() {
 		super(String.valueOf(gameNum++), ConstantList.GAME_SLEEP);
 		connections = new ArrayList<>();
+		shoots = new ArrayList<>();
 	}
 
 	public void addConnection(Connection connection) {
@@ -50,6 +54,18 @@ public class Game extends MyThread implements IObserver {
 	public void execute() {
 		for (int i = 0; i < connections.size(); i++) {			
 			sendUsers(connections.get(i));
+			if (!shoots.isEmpty()) {
+				connections.get(i).sendShoots(shoots);
+			}
+		}
+		deleteShoot();
+	}
+
+	private void deleteShoot() {
+		for (int i = 0; i < shoots.size(); i++) {
+			if (shoots.get(i).isStop()) {
+				shoots.remove(i);
+			}
 		}
 	}
 
@@ -60,5 +76,10 @@ public class Game extends MyThread implements IObserver {
 
 	@Override
 	public void addPlayer(Connection connection) {
+	}
+
+	@Override
+	public void createShoot(int x, int y) {
+		shoots.add(new Shoot(shootNum++, x, y));
 	}
 }

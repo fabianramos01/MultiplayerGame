@@ -5,27 +5,31 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
 
 import model.Direction;
-import network.ManagerPlayer;
+import model.ManagerGame;
+import model.User;
+import network.Client;
 import view.FrameHome;
 
 public class Controller implements ActionListener, KeyListener, IObserver {
 
-	private ManagerPlayer managerPlayer;
+	private Client client;
+	private ManagerGame managerGame;
 	private FrameHome frameHome;
 
 	public Controller() {
 		frameHome = new FrameHome(this);
 		connect();
 	}
-	
+
 	private void startTimer() {
 		Timer timer = new Timer(100, new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				frameHome.paintUsers();
@@ -48,9 +52,10 @@ public class Controller implements ActionListener, KeyListener, IObserver {
 	private void newPlayer(String ip, int port) {
 		try {
 			String name = JOptionPane.showInputDialog(ConstantList.USER_NAME);
-			managerPlayer = new ManagerPlayer(ip, port, name, frameHome.getWidth(), frameHome.getHeight());
-			managerPlayer.addObserver(this);
 			frameHome.showDialog();
+			managerGame = new ManagerGame(name, frameHome.getWidth(), frameHome.getHeight());
+			client = new Client(ip, port, managerGame.getPlayer());
+			client.addObserver(this);
 		} catch (IOException e) {
 			JOptionPane.showMessageDialog(null, ConstantList.CONNECTION_ERROR, ConstantList.ERROR,
 					JOptionPane.ERROR_MESSAGE);
@@ -71,14 +76,15 @@ public class Controller implements ActionListener, KeyListener, IObserver {
 
 	private void movePlayer(int keycode) {
 		if (keycode == KeyEvent.VK_UP) {
-			managerPlayer.move(Direction.UP);
+			managerGame.move(Direction.UP);
 		} else if (keycode == KeyEvent.VK_DOWN) {
-			managerPlayer.move(Direction.DOWN);
+			managerGame.move(Direction.DOWN);
 		} else if (keycode == KeyEvent.VK_RIGHT) {
-			managerPlayer.move(Direction.RIGHT);
+			managerGame.move(Direction.RIGHT);
 		} else if (keycode == KeyEvent.VK_LEFT) {
-			managerPlayer.move(Direction.LEFT);
+			managerGame.move(Direction.LEFT);
 		}
+		client.sendMove(managerGame.getPlayer().getArea().getX(), managerGame.getPlayer().getArea().getY());
 		frameHome.paintUsers();
 	}
 
@@ -98,7 +104,12 @@ public class Controller implements ActionListener, KeyListener, IObserver {
 
 	@Override
 	public void startGame() {
-		frameHome.init(managerPlayer.getPlayer(), managerPlayer.getUsers());
+		frameHome.init(managerGame.getPlayer(), managerGame.getUsers());
 		startTimer();
+	}
+
+	@Override
+	public void loadUsers(ArrayList<User> users) {
+		managerGame.loadUsers(users);
 	}
 }

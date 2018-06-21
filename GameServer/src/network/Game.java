@@ -21,6 +21,7 @@ public class Game extends MyThread implements IObserver {
 		System.out.println(connection.getPlayer().getName() + " - Game " + gameNum);
 		connection.addObserver(this);
 		connections.add(connection);
+		sendUsers(connection);
 		if (connections.size() == ConstantList.PLAYER_LIM) {
 			for (Connection actual : connections) {
 				actual.startMessage();

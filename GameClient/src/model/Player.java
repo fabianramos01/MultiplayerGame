@@ -8,7 +8,7 @@ public class Player {
 
 	private String name;
 	private int life;
-	private int kills;
+	private int victories;
 	private Area area;
 	private ArrayList<String> achievements;
 	private ArrayList<String> articles;
@@ -21,14 +21,13 @@ public class Player {
 		this.articles = new ArrayList<>();
 	}
 	
-	public void addKill() {
-		kills++;
+	public void setVictories(int victories) {
+		this.victories = victories;
 	}
 	
-	public void lessLife() {
-		life-= ConstantList.LESS_LIFE;
+	public void setLife(int life) {
+		this.life = life;
 	}
-	
 	
 	public void move(Direction direction) {
 		 area.move(direction);
@@ -46,8 +45,8 @@ public class Player {
 		return area;
 	}
 	
-	public int getKills() {
-		return kills;
+	public int getVictories() {
+		return victories;
 	}
 	
 	public void addAchievement(String achievement) {

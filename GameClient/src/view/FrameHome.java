@@ -29,15 +29,14 @@ public class FrameHome extends JFrame {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setLocationRelativeTo(null);
 		setResizable(false);
-		setVisible(true);
 	}
 	
 	public void showDialog() {
 		dialogLoad = new JDialog();
 		dialogLoad.setUndecorated(true);
-		dialogLoad.setLocationRelativeTo(this);
 		ImageIcon image = new ImageIcon(getClass().getResource(ConstantList.LOAD_IMG));
 		dialogLoad.setSize(image.getIconWidth(), image.getIconHeight());
+		dialogLoad.setLocationRelativeTo(this);
 		JLabel label = new JLabel(image);
 		dialogLoad.add(label);
 		dialogLoad.setVisible(true);

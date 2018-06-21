@@ -7,16 +7,17 @@ public class ConstantList {
 	
 	public static final String APP_NAME = "Game";
 	public static final String APP_ICON = "/data/appIcon.png";
-	public static final String PLAYER_IMG = "/data/ship1.png";
+	public static final String PLAYER_IMG = "/data/ship5.png";
 	public static final String SHOOT_IMG = "/data/shoot.png";
 	public static final String LOAD_IMG = "/data/load3.gif";
+	public static final String BACKGROUND = "/data/background.jpg";
 	public static final Color APP_COLOR = Color.decode("#F7C600");
-	public static final int WIDTH_FRAME = 700;
-	public static final int HEIGHT_FRAME = 700;
+	public static final int WIDTH_FRAME = 900;
+	public static final int HEIGHT_FRAME = 900;
 	
 	public static final Font AGENCY_FB = new Font("Agency FB", Font.BOLD, 35);
 	
-	public static final int SLEEP = 20;
+	public static final int SLEEP = 50;
 	public static final String CONNECTION_ERROR = "No se pudo conectar con el servidor";
 	public static final String ERROR = "ERROR";
 	public static final String GET_IP = "Ingrese la IP del servidor";
@@ -36,7 +37,7 @@ public class ConstantList {
 	public static final String SHOOT = "Shoot";
 	public static final String ID = "Id";
 	
-	public static final int IMG_SIZE = 250;
+	public static final int IMG_SIZE = 150;
 	public static final int SHOOT_HEIGTH = 40;
 	public static final int SHOOT_WIDHT = 25;
 }

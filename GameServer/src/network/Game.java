@@ -22,12 +22,12 @@ public class Game extends MyThread implements IObserver {
 	}
 
 	public void addConnection(Connection connection) {
-		System.out.println(connection.getPlayer().getName() + " - Game " + gameNum);
+		System.out.println(connection.getPlayer().getName() + " - Game " + getText());
 		connection.addObserver(this);
 		connections.add(connection);
-		sendUsers(connection);
 		if (connections.size() == ConstantList.PLAYER_LIM) {
 			for (Connection actual : connections) {
+				sendUsers(actual);
 				actual.startMessage();
 			}
 			start();
@@ -52,11 +52,9 @@ public class Game extends MyThread implements IObserver {
 
 	@Override
 	public void execute() {
-		for (int i = 0; i < connections.size(); i++) {			
-			sendUsers(connections.get(i));
-			if (!shoots.isEmpty()) {
-				connections.get(i).sendShoots(shoots);
-			}
+		for (Connection connection : connections) {
+			sendUsers(connection);
+			connection.sendShoots(shoots);
 		}
 		deleteShoot();
 	}

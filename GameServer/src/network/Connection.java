@@ -32,6 +32,7 @@ public class Connection extends MyThread implements IObservable {
 			output = new DataOutputStream(this.socket.getOutputStream());
 		} catch (IOException e) {
 			System.err.println(e.getLocalizedMessage());
+			e.getStackTrace();
 		}
 		start();
 	}

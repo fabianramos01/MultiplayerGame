@@ -17,6 +17,7 @@ public class PanelGame extends JPanel {
 	private static final long serialVersionUID = 1L;
 	private ImageIcon imagePlayer;
 	private ImageIcon imageShoot;
+	private ImageIcon background;
 	private ArrayList<User> users;
 	private ArrayList<Shoot> shoots;
 	private Area area;
@@ -31,6 +32,7 @@ public class PanelGame extends JPanel {
 		imagePlayer = UtilityList.scaledImage(image, ConstantList.IMG_SIZE, ConstantList.IMG_SIZE);
 		image = new ImageIcon(getClass().getResource(ConstantList.SHOOT_IMG));
 		imageShoot = UtilityList.scaledImage(image, ConstantList.SHOOT_WIDHT, ConstantList.SHOOT_HEIGTH);
+		background = new ImageIcon(getClass().getResource(ConstantList.BACKGROUND));;
 		repaint();
 	}
 
@@ -38,6 +40,7 @@ public class PanelGame extends JPanel {
 	public void paint(Graphics g) {
 		super.paint(g);
 		g.setFont(ConstantList.AGENCY_FB);
+		g.drawImage(background.getImage(), 0, 0, getSize().width, getSize().height, this);
 		g.drawImage(imagePlayer.getImage(), area.getX(), area.getY(), this);
 		for (User user : users) {
 			g.drawImage(imagePlayer.getImage(), user.getPositionX(), user.getPositionY(), this);

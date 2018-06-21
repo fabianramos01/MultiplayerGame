@@ -7,6 +7,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 
+import javax.xml.crypto.dsig.XMLObject;
+
 import controller.ConstantList;
 import controller.IObservable;
 import controller.IObserver;

@@ -67,22 +67,22 @@ public class Connection extends MyThread implements IObservable {
 	public void sendPlayers(ArrayList<User> players) {
 		try {
 			output.writeUTF(Response.PLAYERS_INFO.toString());
-			FileManager.saveFile(player.getName() + ConstantList.XML, players);
-			sendFile(new File(player.getName() + ConstantList.XML));
+			File file = new File(player.getName() + ConstantList.XML);
+			FileManager.saveFile(file, players);;
+			sendFile(file);
+			file.delete();
 		} catch (IOException e) {
 			System.err.println(e.getMessage());
 		}
 	}
 
-	public void sendShoots(ArrayList<Shoot> shoots) {
+	public void sendShoots(File shootFile) {
 		try {
 			output.writeUTF(Response.SHOOTS_INFO.toString());
-			FileManager.saveShootFile(player.getName() + ConstantList.SHOOT + ConstantList.XML, shoots);
-			sendFile(new File(player.getName() + ConstantList.SHOOT + ConstantList.XML));
+			sendFile(shootFile);
 		} catch (IOException e) {
 			System.err.println(e.getMessage());
 		}
-
 	}
 
 	private void sendFile(File file) throws IOException {
@@ -91,7 +91,6 @@ public class Connection extends MyThread implements IObservable {
 		output.writeUTF(file.getName());
 		output.writeInt(array.length);
 		output.write(array);
-		file.delete();
 	}
 
 	private void readFileBytes(File file, byte[] array) throws IOException {
@@ -117,7 +116,7 @@ public class Connection extends MyThread implements IObservable {
 				managerRequest(request);
 			}
 		} catch (IOException e) {
-			System.err.println(e.getMessage() + "-" + player.getName());
+			System.err.println(e.getMessage() + "-" + (player != null ? player.getName() : "--"));
 			stop();
 			iObserver.removeConnection(this);
 		}

@@ -7,8 +7,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 
-import javax.xml.crypto.dsig.XMLObject;
-
 import controller.ConstantList;
 import controller.IObservable;
 import controller.IObserver;
@@ -24,17 +22,16 @@ public class Client extends MyThread implements IObservable{
 	private IObserver iObserver;
 	
 
-	public Client(String ip, int port, Player player) throws IOException {
+	public Client(String ip, int port) throws IOException {
 		super("", ConstantList.SLEEP);
 		socket = new Socket(ip, port);
 		System.out.println("Conexion iniciada");
 		output = new DataOutputStream(socket.getOutputStream());
 		input = new DataInputStream(socket.getInputStream());
-		createPlayer(player);
 		start();
 	}
 
-	private void createPlayer(Player player) throws IOException {
+	public void sendPlayer(Player player, String password) throws IOException {
 		output.writeUTF(Request.SIGN_IN.toString());
 		output.writeUTF(player.getName());
 		output.writeInt(player.getArea().getX());
@@ -60,7 +57,7 @@ public class Client extends MyThread implements IObservable{
 	private void getShootsFile() throws IOException {
 		File file = new File(input.readUTF());
 		readFile(file);
-		iObserver.loadShoots(FileManager.loadShoots(file));;
+		iObserver.loadShoots(FileManager.loadShoots(file));
 		file.delete();
 	}
 

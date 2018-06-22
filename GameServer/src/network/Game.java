@@ -1,11 +1,13 @@
 package network;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import model.MyThread;
 import model.Player;
 import model.Shoot;
 import model.User;
+import persistence.FileManager;
 
 public class Game extends MyThread implements IObserver {
 
@@ -52,11 +54,14 @@ public class Game extends MyThread implements IObserver {
 
 	@Override
 	public void execute() {
+		File shootFile = new File(ConstantList.SHOOT + ConstantList.XML);
+		FileManager.saveShootFile(shootFile, shoots);
 		for (Connection connection : connections) {
 			sendUsers(connection);
-			connection.sendShoots(shoots);
+			connection.sendShoots(shootFile);
 		}
-		deleteShoot();
+		shootFile.delete();
+//		deleteShoot();
 	}
 
 	private void deleteShoot() {
@@ -78,6 +83,6 @@ public class Game extends MyThread implements IObserver {
 
 	@Override
 	public void createShoot(int x, int y) {
-		shoots.add(new Shoot(shootNum++, x, y));
+		shoots.add(new Shoot(x, y));
 	}
 }

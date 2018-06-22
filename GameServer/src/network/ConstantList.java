@@ -5,8 +5,8 @@ public class ConstantList {
 	public static final String CONNECTION_ERROR = "Puerto invalido";
 	public static final String ERROR = "ERROR";
 	public static final String GET_PORT = "Ingrese el puerto";
-	public static final int GAME_SLEEP = 100;
-	public static final int SHOOT_SLEEP = 1000;
+	public static final int GAME_SLEEP = 20;
+	public static final int SHOOT_SLEEP = 700;
 	
 	public static final int PLAYER_LIM = 2;
 	public static final int LIFE = 100;
@@ -20,4 +20,5 @@ public class ConstantList {
 	public static final String SHOOT = "Shoot";
 	public static final String ID = "Id";
 	public static final String XML = ".xml";
+	public static final String UTF_8 = "UTF-8";
 }

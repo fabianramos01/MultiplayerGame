@@ -25,12 +25,11 @@ public class Controller implements ActionListener, KeyListener, IObserver {
 	private Timer timer;
 
 	public Controller() {
-		frameHome = new FrameHome(this);
 		connect();
 	}
 
 	private void startTimer() {
-		timer = new Timer(ConstantList.SLEEP, new ActionListener() {
+		timer = new Timer(100, new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -52,20 +51,48 @@ public class Controller implements ActionListener, KeyListener, IObserver {
 	// }
 
 	private void connect() {
-		newPlayer("", 2000);
-	}
-
-	private void newPlayer(String ip, int port) {
 		try {
-			String name = JOptionPane.showInputDialog(ConstantList.USER_NAME);
-			managerGame = new ManagerGame(name, frameHome.getWidth(), frameHome.getHeight());
-			client = new Client(ip, port, managerGame.getPlayer());
-			client.addObserver(this);
-			frameHome.showDialog();
+			client = new Client("", 2000);
+			frameHome = new FrameHome(this);
 		} catch (IOException e) {
 			JOptionPane.showMessageDialog(null, ConstantList.CONNECTION_ERROR, ConstantList.ERROR,
 					JOptionPane.ERROR_MESSAGE);
 		}
+	}
+
+	private void newPlayer() {
+		String[] info = frameHome.getInfo();
+		if (!areEmptyFields(info)) {
+			validatePassword(info);
+		} else {
+			JOptionPane.showMessageDialog(null, ConstantList.EMPTY_FIELDS, ConstantList.ERROR,
+					JOptionPane.ERROR_MESSAGE);
+		}
+	}
+
+	private void validatePassword(String[] info) {
+		try {
+			if (info[1].equals(info[2])) {
+				managerGame = new ManagerGame(info[0], frameHome.getWidth(), frameHome.getHeight());
+				client.sendPlayer(managerGame.getPlayer(), info[1]);
+				client.addObserver(this);
+				frameHome.showDialog();
+			} else {
+				JOptionPane.showMessageDialog(null, ConstantList.WRONG_PASSWORD, ConstantList.ERROR,
+						JOptionPane.ERROR_MESSAGE);
+			}
+		} catch (IOException e) {
+			System.err.println(e.getMessage());
+		}
+	}
+
+	private boolean areEmptyFields(String[] info) {
+		for (String string : info) {
+			if (string.equals("")) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	@Override
@@ -74,6 +101,7 @@ public class Controller implements ActionListener, KeyListener, IObserver {
 		case COMMAND_LOG_ING:
 			break;
 		case COMMAND_SIGN_IN:
+			newPlayer();
 			break;
 		}
 	}

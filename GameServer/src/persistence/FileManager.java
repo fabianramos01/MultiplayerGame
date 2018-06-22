@@ -1,5 +1,6 @@
 package persistence;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.util.ArrayList;
 
@@ -14,7 +15,7 @@ import network.ConstantList;
 
 public class FileManager {
 
-	public static void saveFile(String path, ArrayList<User> users) {
+	public static void saveFile(File file, ArrayList<User> users) {
 		Element root = new Element(ConstantList.PLAYERS);
 		Document doc = new Document(root);
 		for (User user : users) {
@@ -28,7 +29,7 @@ public class FileManager {
 			root.addContent(player);
 		}
 		try {
-			FileWriter fileWriter = new FileWriter(path);
+			FileWriter fileWriter = new FileWriter(file);
 			XMLOutputter xmlOutputter = new XMLOutputter(Format.getPrettyFormat());
 			xmlOutputter.setFormat(Format.getCompactFormat());
 			xmlOutputter.output(doc, fileWriter);
@@ -38,7 +39,7 @@ public class FileManager {
 		}
 	}
 	
-	public static void saveShootFile(String path, ArrayList<Shoot> shoots) {
+	public static void saveShootFile(File file, ArrayList<Shoot> shoots) {
 		Element root = new Element(ConstantList.PLAYERS);
 		Document doc = new Document(root);
 		for (Shoot shoot : shoots) {
@@ -52,7 +53,7 @@ public class FileManager {
 			root.addContent(element);
 		}
 		try {
-			FileWriter fileWriter = new FileWriter(path);
+			FileWriter fileWriter = new FileWriter(file);
 			XMLOutputter xmlOutputter = new XMLOutputter(Format.getPrettyFormat());
 			xmlOutputter.setFormat(Format.getCompactFormat());
 			xmlOutputter.output(doc, fileWriter);

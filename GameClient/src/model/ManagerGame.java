@@ -16,11 +16,11 @@ public class ManagerGame {
 		users = new ArrayList<>();
 		shoots = new ArrayList<>();
 	}
-	
+
 	public void move(Direction direction) {
 		player.move(direction);
 	}
-	
+
 	public void loadUsers(ArrayList<User> players) {
 		if (users.isEmpty()) {
 			for (User user : players) {
@@ -42,23 +42,20 @@ public class ManagerGame {
 			}
 		}
 	}
-	
+
 	public void loadShoots(ArrayList<Shoot> shootList) {
-		if (shoots.isEmpty()) {
-			for (Shoot shoot : shootList) {
-				shoots.add(shoot);
+		for (int i = 0; i < shootList.size(); i++) {
+			if (!setInfoShoot(shootList.get(i))) {
+				shootList.remove(shootList.get(i));
 			}
-		} else {
-			for (int i = 0; i < shootList.size(); i++) {
-				if (!setInfoShoot(shootList.get(i), shootList)) {
-					shoots.remove(shootList.get(i));
-				}
-			}
+		}
+		for (Shoot shoot : shootList) {
+			shoots.add(shoot);
 		}
 	}
 
-	private boolean setInfoShoot(Shoot shoot, ArrayList<Shoot> shootList) {
-		for (Shoot actual : shootList) {
+	private boolean setInfoShoot(Shoot shoot) {
+		for (Shoot actual : shoots) {
 			if (actual.getId() == shoot.getId()) {
 				actual.setX(shoot.getX());
 				actual.setY(shoot.getY());

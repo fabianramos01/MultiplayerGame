@@ -1,11 +1,13 @@
 package view;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
+import javax.swing.text.html.HTMLDocument.HTMLReader.BlockAction;
 
 import controller.ConstantList;
 import model.Area;
@@ -42,6 +44,7 @@ public class PanelGame extends JPanel {
 		g.setFont(ConstantList.AGENCY_FB);
 		g.drawImage(background.getImage(), 0, 0, getSize().width, getSize().height, this);
 		g.drawImage(imagePlayer.getImage(), area.getX(), area.getY(), this);
+		g.setColor(Color.WHITE);
 		for (User user : users) {
 			g.drawImage(imagePlayer.getImage(), user.getPositionX(), user.getPositionY(), this);
 			g.drawString(user.getName(), user.getPositionX() + 50, user.getPositionY());

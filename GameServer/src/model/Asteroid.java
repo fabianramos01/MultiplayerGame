@@ -2,19 +2,16 @@ package model;
 
 import network.ConstantList;
 
-public class Shoot extends MyThread {
+public class Asteroid extends MyThread {
 
 	public static int count = 0;
 	private int id;
 	private int x;
 	private int y;
 	
-	public Shoot(int x, int y) {
+	public Asteroid() {
 		super("", ConstantList.SHOOT_SLEEP);
 		this.id = count++;
-		this.x = x;
-		this.y = y;
-		start();
 	}
 
 	public int getX() {
@@ -31,8 +28,8 @@ public class Shoot extends MyThread {
 
 	@Override
 	public void execute() {
-		y -= ConstantList.S_MOVE_UNIT;
-		if (y <= 0) {
+		y += ConstantList.S_MOVE_UNIT;
+		if (y <= ConstantList.WIDTH_FRAME) {
 			stop();
 		}
 	}

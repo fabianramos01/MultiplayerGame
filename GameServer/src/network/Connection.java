@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import model.Area;
 import model.MyThread;
 import model.Player;
-import model.Shoot;
 import model.User;
 import persistence.FileManager;
 
@@ -69,7 +68,7 @@ public class Connection extends MyThread implements IObservable {
 			output.writeUTF(Response.PLAYERS_INFO.toString());
 			File file = new File(player.getName() + ConstantList.XML);
 			FileManager.saveFile(file, players);;
-			sendFile(file);
+			sendFile(file, "");
 			file.delete();
 		} catch (IOException e) {
 			System.err.println(e.getMessage());
@@ -79,16 +78,16 @@ public class Connection extends MyThread implements IObservable {
 	public void sendShoots(File shootFile) {
 		try {
 			output.writeUTF(Response.SHOOTS_INFO.toString());
-			sendFile(shootFile);
+			sendFile(shootFile, player.getName());
 		} catch (IOException e) {
 			System.err.println(e.getMessage());
 		}
 	}
 
-	private void sendFile(File file) throws IOException {
+	private void sendFile(File file, String fileName) throws IOException {
 		byte[] array = new byte[(int) file.length()];
 		readFileBytes(file, array);
-		output.writeUTF(file.getName());
+		output.writeUTF(fileName + file.getName());
 		output.writeInt(array.length);
 		output.write(array);
 	}

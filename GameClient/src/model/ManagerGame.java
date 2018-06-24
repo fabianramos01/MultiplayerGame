@@ -10,9 +10,10 @@ public class ManagerGame {
 	private ArrayList<User> users;
 	private ArrayList<Shoot> shoots;
 
-	public ManagerGame(String name, int width, int height) {
-		this.player = new Player(name, new Area((int) (Math.random() * (width - ConstantList.IMG_SIZE)),
-				(int) (height - ConstantList.IMG_SIZE), width, height));
+	public ManagerGame(String name) {
+		this.player = new Player(name,
+				new Area((int) (Math.random() * (ConstantList.WIDTH_FRAME - ConstantList.IMG_SIZE)),
+						ConstantList.HEIGHT_FRAME - ConstantList.IMG_SIZE - 70, 0, 0));
 		users = new ArrayList<>();
 		shoots = new ArrayList<>();
 	}
@@ -46,11 +47,8 @@ public class ManagerGame {
 	public void loadShoots(ArrayList<Shoot> shootList) {
 		for (int i = 0; i < shootList.size(); i++) {
 			if (!setInfoShoot(shootList.get(i))) {
-				shootList.remove(shootList.get(i));
+				shoots.add(shootList.get(i));
 			}
-		}
-		for (Shoot shoot : shootList) {
-			shoots.add(shoot);
 		}
 	}
 

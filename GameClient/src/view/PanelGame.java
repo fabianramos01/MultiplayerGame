@@ -7,7 +7,6 @@ import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
-import javax.swing.text.html.HTMLDocument.HTMLReader.BlockAction;
 
 import controller.ConstantList;
 import model.Area;
@@ -49,8 +48,8 @@ public class PanelGame extends JPanel {
 			g.drawImage(imagePlayer.getImage(), user.getPositionX(), user.getPositionY(), this);
 			g.drawString(user.getName(), user.getPositionX() + 50, user.getPositionY());
 		}
-		for (Shoot shoot : shoots) {
-			g.drawImage(imageShoot.getImage(), shoot.getX() + 100, shoot.getY() - ConstantList.SHOOT_HEIGTH, this);
+		for (int i = 0; i < shoots.size(); i++) {
+			g.drawImage(imageShoot.getImage(), shoots.get(i).getX() + 60, shoots.get(i).getY() - ConstantList.SHOOT_HEIGTH, this);
 		}
 	}
 }

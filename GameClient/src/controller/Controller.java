@@ -73,7 +73,7 @@ public class Controller implements ActionListener, KeyListener, IObserver {
 	private void validatePassword(String[] info) {
 		try {
 			if (info[1].equals(info[2])) {
-				managerGame = new ManagerGame(info[0], frameHome.getWidth(), frameHome.getHeight());
+				managerGame = new ManagerGame(info[0]);
 				client.sendPlayer(managerGame.getPlayer(), info[1]);
 				client.addObserver(this);
 				frameHome.showDialog();
@@ -115,8 +115,6 @@ public class Controller implements ActionListener, KeyListener, IObserver {
 			managerGame.move(Direction.RIGHT);
 		} else if (keycode == KeyEvent.VK_LEFT) {
 			managerGame.move(Direction.LEFT);
-		} else if (keycode == KeyEvent.VK_SPACE) {
-			client.createShoot(managerGame.getPlayer().getArea().getX(), managerGame.getPlayer().getArea().getY());
 		}
 		client.sendMove(managerGame.getPlayer().getArea().getX(), managerGame.getPlayer().getArea().getY());
 	}
@@ -128,7 +126,11 @@ public class Controller implements ActionListener, KeyListener, IObserver {
 
 	@Override
 	public void keyReleased(KeyEvent arg0) {
-		movePlayer(arg0.getKeyCode());
+		if (arg0.getKeyCode() == KeyEvent.VK_SPACE) {
+			client.createShoot(managerGame.getPlayer().getArea().getX(), managerGame.getPlayer().getArea().getY());
+		} else {
+			movePlayer(arg0.getKeyCode());
+		}
 	}
 
 	@Override

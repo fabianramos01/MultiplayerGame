@@ -6,12 +6,14 @@ public class ConstantList {
 	public static final String ERROR = "ERROR";
 	public static final String GET_PORT = "Ingrese el puerto";
 	public static final int GAME_SLEEP = 20;
-	public static final int SHOOT_SLEEP = 700;
+	public static final int SHOOT_SLEEP = 30;
+	public static final int MANAGER_SLEEP = 100;
+	public static final int WIDTH_FRAME = 900;
 	
 	public static final int PLAYER_LIM = 2;
 	public static final int LIFE = 100;
 	public static final int LESS_LIFE = 5;
-	public static final int MOVE_UNIT = 10;
+	public static final int S_MOVE_UNIT = 10;
 	public static final String PLAYERS = "Players";
 	public static final String PLAYER = "Player";
 	public static final String NAME = "Name";

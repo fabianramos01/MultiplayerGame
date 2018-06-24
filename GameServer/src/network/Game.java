@@ -3,6 +3,7 @@ package network;
 import java.io.File;
 import java.util.ArrayList;
 
+import model.GameManager;
 import model.MyThread;
 import model.Player;
 import model.Shoot;
@@ -14,13 +15,13 @@ public class Game extends MyThread implements IObserver {
 	public static int gameNum = 0;
 	public int shootNum;
 	private ArrayList<Connection> connections;
-	private ArrayList<Shoot> shoots;
+	private GameManager gameManager;
 	private int sockets;
 
 	public Game() {
 		super(String.valueOf(gameNum++), ConstantList.GAME_SLEEP);
 		connections = new ArrayList<>();
-		shoots = new ArrayList<>();
+		gameManager = new GameManager();
 	}
 
 	public void addConnection(Connection connection) {
@@ -44,7 +45,7 @@ public class Game extends MyThread implements IObserver {
 	private void sendUsers(Connection actual) {
 		ArrayList<User> list = new ArrayList<>();
 		for (Connection connection : connections) {
-			if (connection != actual) {				
+			if (connection != actual) {
 				Player player = connection.getPlayer();
 				list.add(new User(player.getName(), player.getArea().getX(), player.getArea().getY()));
 			}
@@ -55,22 +56,16 @@ public class Game extends MyThread implements IObserver {
 	@Override
 	public void execute() {
 		File shootFile = new File(ConstantList.SHOOT + ConstantList.XML);
-		FileManager.saveShootFile(shootFile, shoots);
+		FileManager.saveShootFile(shootFile, gameManager.getShoots());
 		for (Connection connection : connections) {
 			sendUsers(connection);
-			connection.sendShoots(shootFile);
-		}
-		shootFile.delete();
-//		deleteShoot();
-	}
-
-	private void deleteShoot() {
-		for (int i = 0; i < shoots.size(); i++) {
-			if (shoots.get(i).isStop()) {
-				shoots.remove(i);
+			if (!gameManager.getShoots().isEmpty()) {
+				connection.sendShoots(shootFile);
 			}
 		}
 	}
+
+	
 
 	@Override
 	public void removeConnection(Connection connection) {
@@ -83,6 +78,6 @@ public class Game extends MyThread implements IObserver {
 
 	@Override
 	public void createShoot(int x, int y) {
-		shoots.add(new Shoot(x, y));
+		gameManager.addShoot(x, y);
 	}
 }

@@ -46,6 +46,6 @@ public class ConstantList {
 	public static final String ID = "Id";
 	
 	public static final int IMG_SIZE = 150;
-	public static final int SHOOT_HEIGTH = 40;
-	public static final int SHOOT_WIDHT = 25;
+	public static final int SHOOT_HEIGTH = 70;
+	public static final int SHOOT_WIDHT = 40;
 }

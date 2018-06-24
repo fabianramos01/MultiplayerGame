@@ -9,6 +9,7 @@ public class ManagerGame {
 	private Player player;
 	private ArrayList<User> users;
 	private ArrayList<Shoot> shoots;
+	private ArrayList<Asteroid> asteroids;
 
 	public ManagerGame(String name) {
 		this.player = new Player(name,
@@ -16,6 +17,7 @@ public class ManagerGame {
 						ConstantList.HEIGHT_FRAME - ConstantList.IMG_SIZE - 70, 0, 0));
 		users = new ArrayList<>();
 		shoots = new ArrayList<>();
+		asteroids = new ArrayList<>();
 	}
 
 	public void move(Direction direction) {
@@ -50,6 +52,20 @@ public class ManagerGame {
 				shoots.add(shootList.get(i));
 			}
 		}
+		for (int i = 0; i < shoots.size(); i++) {
+			if (!shootExist(shoots.get(i), shootList)) {
+				shoots.remove(i);
+			}
+		}
+	}
+	
+	private boolean shootExist(Shoot shoot, ArrayList<Shoot> shootList) {
+		for (Shoot acShoot : shootList) {
+			if (acShoot.getId() == shoot.getId()) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	private boolean setInfoShoot(Shoot shoot) {
@@ -57,6 +73,39 @@ public class ManagerGame {
 			if (actual.getId() == shoot.getId()) {
 				actual.setX(shoot.getX());
 				actual.setY(shoot.getY());
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public void loadAsteroids(ArrayList<Asteroid> asteroidList) {
+		for (int i = 0; i < asteroidList.size(); i++) {
+			if (!setAsteroidInfo(asteroidList.get(i))) {
+				asteroids.add(asteroidList.get(i));
+			}
+		}
+		for (int i = 0; i < asteroids.size(); i++) {
+			if (!asteroidExist(asteroids.get(i), asteroidList)) {
+				asteroids.remove(i);
+			}
+		}
+	}
+	
+	private boolean asteroidExist(Asteroid asteroid, ArrayList<Asteroid> asteroidList) {
+		for (Asteroid acAsteroid : asteroidList) {
+			if (acAsteroid.getId() == asteroid.getId()) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	private boolean setAsteroidInfo(Asteroid asteroid) {
+		for (Asteroid actual : asteroids) {
+			if (actual.getId() == asteroid.getId()) {
+				actual.setX(asteroid.getX());
+				actual.setY(asteroid.getY());
 				return true;
 			}
 		}
@@ -73,5 +122,9 @@ public class ManagerGame {
 
 	public ArrayList<User> getUsers() {
 		return users;
+	}
+	
+	public ArrayList<Asteroid> getAsteroids() {
+		return asteroids;
 	}
 }

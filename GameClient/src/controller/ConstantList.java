@@ -11,6 +11,7 @@ public class ConstantList {
 	public static final String SHOOT_IMG = "/data/shoot.png";
 	public static final String LOAD_IMG = "/data/load3.gif";
 	public static final String BACKGROUND = "/data/background.jpg";
+	public static final String ASTEROID_IMG = "/data/asteroid.png";
 	public static final Color APP_COLOR = Color.decode("#136EF1");
 	public static final int WIDTH_FRAME = 900;
 	public static final int HEIGHT_FRAME = 900;
@@ -39,13 +40,22 @@ public class ConstantList {
 	public static final String NAME = "Name";
 	public static final String X = "X";
 	public static final String Y = "Y";
+	public static final String ID = "Id";
+	public static final String SHOOT = "Shoot";
+	public static final String ASTEROID = "Asteroid";
+	public static final String TYPE = "Type";
+	
 	public static final String USER_NAME = "Nombre de usuario";
 	public static final String PASSWORD = "Contraseña";
 	public static final String CONFIRM_PASSWORD = "Confirmar contraseña";
-	public static final String SHOOT = "Shoot";
-	public static final String ID = "Id";
 	
 	public static final int IMG_SIZE = 150;
 	public static final int SHOOT_HEIGTH = 70;
 	public static final int SHOOT_WIDHT = 40;
+	public static final int AST_O_SIZE = 50;
+	public static final int AST_T_SIZE = 100;
+	public static final int AST_TH_SIZE = 150;
+	
+	public static final int MIN_TYPE = 1;
+	public static final int MAX_TYPE = 3;
 }

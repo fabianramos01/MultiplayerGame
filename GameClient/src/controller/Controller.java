@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
 
+import model.Asteroid;
 import model.Direction;
 import model.ManagerGame;
 import model.Shoot;
@@ -139,7 +140,8 @@ public class Controller implements ActionListener, KeyListener, IObserver {
 
 	@Override
 	public void startGame() {
-		frameHome.init(managerGame.getPlayer(), managerGame.getUsers(), managerGame.getShoots());
+		frameHome.init(managerGame.getPlayer(), managerGame.getUsers(), managerGame.getShoots(),
+				managerGame.getAsteroids());
 		startTimer();
 	}
 
@@ -151,5 +153,20 @@ public class Controller implements ActionListener, KeyListener, IObserver {
 	@Override
 	public void loadShoots(ArrayList<Shoot> shoots) {
 		managerGame.loadShoots(shoots);
+	}
+
+	@Override
+	public void loadAsteroids(ArrayList<Asteroid> asteroids) {
+		managerGame.loadAsteroids(asteroids);
+	}
+
+	@Override
+	public void loseGame() {
+		// TODO Auto-generated method stub
+	}
+
+	@Override
+	public void winGame() {
+		// TODO Auto-generated method stub
 	}
 }

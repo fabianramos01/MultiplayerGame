@@ -25,8 +25,14 @@ public class Player {
 		kills++;
 	}
 	
-	public void lessLife() {
-		life-= ConstantList.LESS_LIFE;
+	public void lessLife(int asType) {
+		if (asType == ConstantList.MAX_TYPE) {
+			life-= ConstantList.LESS_LIFE_TH;
+		} else if (asType == ConstantList.MIN_TYPE) {
+			life-= ConstantList.LESS_LIFE_O;
+		} else {
+			life-= ConstantList.LESS_LIFE_T;
+		}
 	}
 	
 	public String getName() {

@@ -83,11 +83,20 @@ public class Connection extends MyThread implements IObservable {
 			System.err.println(e.getMessage());
 		}
 	}
+	
+	public void sendAsteroids(File asFile) {
+		try {
+			output.writeUTF(Response.ASTEROIDS_INFO.toString());
+			sendFile(asFile, player.getName());
+		} catch (IOException e) {
+			System.err.println(e.getMessage());
+		}
+	}
 
 	private void sendFile(File file, String fileName) throws IOException {
 		byte[] array = new byte[(int) file.length()];
 		readFileBytes(file, array);
-		output.writeUTF(fileName + file.getName());
+		output.writeUTF(file.getName());
 		output.writeInt(array.length);
 		output.write(array);
 	}
@@ -137,6 +146,22 @@ public class Connection extends MyThread implements IObservable {
 
 	public Player getPlayer() {
 		return player;
+	}
+
+	public void loseMessage() {
+		try {
+			output.writeUTF(Response.YOU_LOSE.toString());
+		} catch (IOException e) {
+			System.err.println(e.getMessage());
+		}
+	}
+	
+	public void winMessage() {
+		try {
+			output.writeUTF(Response.YOU_WIN.toString());
+		} catch (IOException e) {
+			System.err.println(e.getMessage());
+		}
 	}
 
 }

@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import model.GameManager;
 import model.MyThread;
 import model.Player;
-import model.Shoot;
 import model.User;
 import persistence.FileManager;
 
@@ -28,12 +27,15 @@ public class Game extends MyThread implements IObserver {
 		System.out.println(connection.getPlayer().getName() + " - Game " + getText());
 		connection.addObserver(this);
 		connections.add(connection);
+		gameManager.addPlayer(connection.getPlayer());
 		if (connections.size() == ConstantList.PLAYER_LIM) {
 			for (Connection actual : connections) {
 				sendUsers(actual);
 				actual.startMessage();
 			}
 			start();
+			gameManager.start();
+			gameManager.timerAsteroid();
 		}
 		sockets++;
 	}
@@ -57,19 +59,38 @@ public class Game extends MyThread implements IObserver {
 	public void execute() {
 		File shootFile = new File(ConstantList.SHOOT + ConstantList.XML);
 		FileManager.saveShootFile(shootFile, gameManager.getShoots());
-		for (Connection connection : connections) {
+		File asteroidFile = new File(ConstantList.ASTEROID + ConstantList.XML);
+		FileManager.saveAsteroidFile(asteroidFile, gameManager.getAsteroids());
+		Connection connection;
+		for (int i = 0; i < connections.size(); i++) {
+			connection = connections.get(i);
 			sendUsers(connection);
 			if (!gameManager.getShoots().isEmpty()) {
 				connection.sendShoots(shootFile);
 			}
+			if (!gameManager.getAsteroids().isEmpty()) {
+				connection.sendAsteroids(asteroidFile);
+			}
+		}
+		playerAlive();
+	}
+	
+	private void playerAlive() {
+		for (int i = 0; i < connections.size(); i++) {
+			if (connections.get(i).getPlayer().getLife() <= 0) {
+				connections.get(i).loseMessage();
+				removeConnection(connections.get(i));
+			}
 		}
 	}
-
-	
 
 	@Override
 	public void removeConnection(Connection connection) {
 		connections.remove(connection);
+		if (connections.size() == 1) {
+			connections.get(0).winMessage();
+			stop();
+		}
 	}
 
 	@Override

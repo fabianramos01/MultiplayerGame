@@ -51,6 +51,15 @@ public class Client extends MyThread implements IObservable{
 		case SHOOTS_INFO:
 			getShootsFile();
 			break;
+		case ASTEROIDS_INFO:
+			getAsteroidsFile();
+			break;
+		case YOU_LOSE:
+			iObserver.loseGame();
+			break;
+		case YOU_WIN:
+			iObserver.winGame();
+			break;
 		}
 	}
 
@@ -58,7 +67,12 @@ public class Client extends MyThread implements IObservable{
 		File file = new File(input.readUTF());
 		readFile(file);
 		iObserver.loadShoots(FileManager.loadShoots(file));
-		file.delete();
+	}
+	
+	private void getAsteroidsFile() throws IOException {
+		File file = new File(input.readUTF());
+		readFile(file);
+		iObserver.loadAsteroids(FileManager.loadAsteroids(file));
 	}
 
 	private void getUsersInfo() throws IOException {

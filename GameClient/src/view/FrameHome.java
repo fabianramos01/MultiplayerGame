@@ -10,6 +10,7 @@ import javax.swing.JLabel;
 
 import controller.ConstantList;
 import controller.Controller;
+import model.Asteroid;
 import model.Player;
 import model.Shoot;
 import model.User;
@@ -35,7 +36,7 @@ public class FrameHome extends JFrame {
 		setResizable(false);
 		setVisible(true);
 	}
-	
+
 	public void showDialog() {
 		setVisible(false);
 		dialogLoad = new JDialog();
@@ -48,26 +49,26 @@ public class FrameHome extends JFrame {
 		dialogLoad.setVisible(true);
 	}
 
-	public void init(Player player, ArrayList<User> users, ArrayList<Shoot> shoots) {
+	public void init(Player player, ArrayList<User> users, ArrayList<Shoot> shoots, ArrayList<Asteroid> asteroids) {
 		dialogLoad.setVisible(false);
 		remove(panelSignIn);
 		setResizable(true);
 		setSize(ConstantList.WIDTH_FRAME, ConstantList.HEIGHT_FRAME);
-		panelGame = new PanelGame(listener, player.getArea(), users, shoots);
+		panelGame = new PanelGame(listener, player.getArea(), users, shoots, asteroids);
 		add(panelGame, BorderLayout.CENTER);
 		setJMenuBar(new MenuBarUser(listener));
 		setResizable(false);
 		setVisible(true);
 	}
-	
+
 	public void paintGame() {
 		panelGame.repaint();
 		revalidate();
 	}
-	
+
 	public String[] getInfo() {
 		return panelSignIn.getInfo();
 	}
 
-//	SwingUtilities.updateComponentTreeUI(this);		
+	// SwingUtilities.updateComponentTreeUI(this);
 }

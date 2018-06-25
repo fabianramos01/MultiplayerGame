@@ -50,7 +50,9 @@ public class Game extends MyThread implements IObserver {
 				list.add(connection.getPlayer());
 			}
 		}
-		actual.sendPlayers(list);
+		File file = new File(ConstantList.PLAYERS + ConstantList.XML);
+		FileManager.saveFile(file, list);
+		actual.sendPlayers(file);
 	}
 
 	@Override
@@ -59,11 +61,14 @@ public class Game extends MyThread implements IObserver {
 		FileManager.saveShootFile(shootFile, gameManager.getShoots());
 		File asteroidFile = new File(ConstantList.ASTEROID + ConstantList.XML);
 		FileManager.saveAsteroidFile(asteroidFile, gameManager.getAsteroids());
+		File file = new File(ConstantList.PLAYERS + ConstantList.XML);
+		FileManager.saveFile(file, gameManager.getPlayers());
 		Connection connection;
+		playerAlive();
 		for (int i = 0; i < connections.size(); i++) {
 			connection = connections.get(i);
 			connection.sendLife();
-			sendUsers(connection);
+			connection.sendPlayers(file);
 			if (!gameManager.getShoots().isEmpty()) {
 				connection.sendShoots(shootFile);
 			}
@@ -71,9 +76,8 @@ public class Game extends MyThread implements IObserver {
 				connection.sendAsteroids(asteroidFile);
 			}
 		}
-		playerAlive();
 	}
-	
+
 	private void playerAlive() {
 		for (int i = 0; i < connections.size(); i++) {
 			if (connections.get(i).getPlayer().getLife() <= 0) {
@@ -89,8 +93,8 @@ public class Game extends MyThread implements IObserver {
 		connections.remove(connection);
 		if (connections.size() == 1) {
 			stop();
-			connections.get(0).winMessage();
 			gameManager.stopGame();
+			connections.get(0).winMessage();
 		}
 	}
 

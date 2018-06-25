@@ -27,8 +27,9 @@ public class PanelLife extends JPanel {
 	public void paint(Graphics g) {
 		super.paint(g);
 		g.setColor(Color.RED);
-		g.fillRect(30, 30, life*100/ConstantList.LIFE, 110);
+		g.fillRect(5, 30, life*110/ConstantList.LIFE, 110);
 		g.setColor(Color.BLACK);
-		g.drawRect(30, 30, ConstantList.LIFE, 110);
+		g.drawRect(5, 30, ConstantList.LIFE, 110);
+		g.drawString(String.valueOf(life), 5, 15);
 	}
 }

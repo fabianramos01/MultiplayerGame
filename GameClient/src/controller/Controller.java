@@ -40,22 +40,18 @@ public class Controller implements ActionListener, KeyListener, IObserver {
 		timer.start();
 	}
 
-	// private void connect() {
-	// String ip = JOptionPane.showInputDialog(ConstantList.GET_IP);
-	// String port = JOptionPane.showInputDialog(ConstantList.GET_PORT);
-	// if (!port.equals("")) {
-	// newPlayer("", Integer.parseInt(port));
-	// } else {
-	// JOptionPane.showMessageDialog(null, ConstantList.PORT_ERROR,
-	// ConstantList.ERROR, JOptionPane.ERROR_MESSAGE);
-	// }
-	// }
-
 	private void connect() {
+		String ip = JOptionPane.showInputDialog(ConstantList.GET_IP);
+		String port = JOptionPane.showInputDialog(ConstantList.GET_PORT);
 		try {
-			client = new Client("", 2000);
-			client.addObserver(this);
-			frameHome = new FrameHome(this);
+			if (!port.equals("")) {
+				client = new Client(ip, Integer.parseInt(port));
+				client.addObserver(this);
+				frameHome = new FrameHome(this);
+			} else {
+				JOptionPane.showMessageDialog(frameHome, ConstantList.PORT_ERROR, ConstantList.ERROR,
+						JOptionPane.ERROR_MESSAGE);
+			}
 		} catch (IOException e) {
 			JOptionPane.showMessageDialog(null, ConstantList.CONNECTION_ERROR, ConstantList.ERROR,
 					JOptionPane.ERROR_MESSAGE);

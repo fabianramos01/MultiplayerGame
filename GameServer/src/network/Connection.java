@@ -91,6 +91,15 @@ public class Connection extends MyThread implements IObservable {
 			System.err.println(e.getMessage());
 		}
 	}
+	
+	public void sendPlayers(File file) {
+		try {
+			output.writeUTF(Response.PLAYERS_INFO.toString());
+			sendFile(file);
+		} catch (IOException e) {
+			System.err.println(e.getMessage());
+		}
+	}
 
 	public void sendShoots(File shootFile) {
 		try {

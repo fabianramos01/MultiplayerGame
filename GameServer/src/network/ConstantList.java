@@ -8,7 +8,7 @@ public class ConstantList {
 	public static final int GAME_SLEEP = 20;
 	public static final int SHOOT_SLEEP = 30;
 	public static final int ASTEROID_SLEEP_I = 200;
-	public static final int MANAGER_SLEEP = 70;
+	public static final int MANAGER_SLEEP = 25;
 	public static final int WIDTH_FRAME = 900;
 	
 	public static final int PLAYER_SIZE = 150;
@@ -20,7 +20,7 @@ public class ConstantList {
 	public static final int AST_T_SIZE = 100;
 	public static final int AST_TH_SIZE = 150;
 	
-	public static final int PLAYER_LIM = 2;
+	public static final int PLAYER_LIM = 5;
 	public static final int LIFE = 100;
 	public static final int LESS_LIFE_O = 15;
 	public static final int LESS_LIFE_T = 30;

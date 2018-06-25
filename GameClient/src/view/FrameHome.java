@@ -20,21 +20,29 @@ public class FrameHome extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private Controller listener;
 	private PanelGame panelGame;
-	private PanelSignIn panelSignIn;
+	private LabelBack labelBack;
 	private JDialog dialogLoad;
+	private PanelLife panelLife;
 
 	public FrameHome(Controller listener) {
 		this.listener = listener;
 		setTitle(ConstantList.APP_NAME);
 		setLayout(new BorderLayout());
-		panelSignIn = new PanelSignIn(listener);
-		add(panelSignIn);
+		labelBack = new LabelBack(listener);
+		add(labelBack);
 		setIconImage(new ImageIcon(getClass().getResource(ConstantList.APP_ICON)).getImage());
-		setSize(ConstantList.WIDTH_FRAME_S, ConstantList.HEIGHT_FRAME_S);
+		setSize(ConstantList.WIDTH_FRAME_L, ConstantList.HEIGHT_FRAME_L);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setLocationRelativeTo(null);
 		setResizable(false);
 		setVisible(true);
+	}
+	
+	public void panelSignIn() {
+		setResizable(true);
+		setSize(ConstantList.WIDTH_FRAME_S, ConstantList.HEIGHT_FRAME_S);
+		labelBack.signIn();
+		setResizable(false);
 	}
 
 	public void showDialog() {
@@ -51,23 +59,50 @@ public class FrameHome extends JFrame {
 
 	public void init(Player player, ArrayList<User> users, ArrayList<Shoot> shoots, ArrayList<Asteroid> asteroids) {
 		dialogLoad.setVisible(false);
-		remove(panelSignIn);
+		remove(labelBack);
 		setResizable(true);
 		setSize(ConstantList.WIDTH_FRAME, ConstantList.HEIGHT_FRAME);
+		panelLife = new PanelLife();
+		add(panelLife, BorderLayout.NORTH);
 		panelGame = new PanelGame(listener, player.getArea(), users, shoots, asteroids);
 		add(panelGame, BorderLayout.CENTER);
-		setJMenuBar(new MenuBarUser(listener));
 		setResizable(false);
 		setVisible(true);
+	}
+	
+	public void setLife(int life) {
+		panelLife.setLife(life);
+
 	}
 
 	public void paintGame() {
 		panelGame.repaint();
-		revalidate();
+	}
+	
+	public void loseMessage() {
+		setMessage(ConstantList.LOSE_IMG);
+	}
+	
+	public void winMessage() {
+		setMessage(ConstantList.WIN_IMG);
+	}
+	
+	private void setMessage(String imagePath) {
+		JDialog dialog = new JDialog(this);
+		ImageIcon image = new ImageIcon(getClass().getResource(imagePath));
+		dialog.setSize(image.getIconWidth(), image.getIconHeight());
+		dialog.setLocationRelativeTo(this);
+		dialog.add(new JLabel(image));
+		dialog.setResizable(false);
+		dialog.setVisible(true);
 	}
 
-	public String[] getInfo() {
-		return panelSignIn.getInfo();
+	public String[] signInInfo() {
+		return labelBack.getInfoSignIn();
+	}
+	
+	public String[] lognInInfo() {
+		return labelBack.getInfoLognIn();
 	}
 
 	// SwingUtilities.updateComponentTreeUI(this);

@@ -36,7 +36,7 @@ public class PanelGame extends JPanel {
 		this.asteroids = asteroids;
 		addKeyListener(keyListener);
 		setFocusable(true);
-		ImageIcon image = new ImageIcon(getClass().getResource(ConstantList.PLAYER_IMG));
+		ImageIcon image = new ImageIcon(getClass().getResource(ConstantList.SHIP_IMG));
 		imagePlayer = UtilityList.scaledImage(image, ConstantList.IMG_SIZE, ConstantList.IMG_SIZE);
 		image = new ImageIcon(getClass().getResource(ConstantList.SHOOT_IMG));
 		imageShoot = UtilityList.scaledImage(image, ConstantList.SHOOT_WIDHT, ConstantList.SHOOT_HEIGTH);

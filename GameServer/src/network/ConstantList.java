@@ -8,7 +8,7 @@ public class ConstantList {
 	public static final int GAME_SLEEP = 20;
 	public static final int SHOOT_SLEEP = 30;
 	public static final int ASTEROID_SLEEP_I = 200;
-	public static final int MANAGER_SLEEP = 200;
+	public static final int MANAGER_SLEEP = 70;
 	public static final int WIDTH_FRAME = 900;
 	
 	public static final int PLAYER_SIZE = 150;
@@ -22,10 +22,10 @@ public class ConstantList {
 	
 	public static final int PLAYER_LIM = 2;
 	public static final int LIFE = 100;
-	public static final int LESS_LIFE_O = 5;
-	public static final int LESS_LIFE_T = 15;
-	public static final int S_MOVE_UNIT = 10;
+	public static final int LESS_LIFE_O = 15;
+	public static final int LESS_LIFE_T = 30;
 	public static final int LESS_LIFE_TH = 50;
+	public static final int S_MOVE_UNIT = 10;
 	
 	public static final String PLAYERS = "Players";
 	public static final String PLAYER = "Player";
@@ -38,6 +38,8 @@ public class ConstantList {
 	public static final String TYPE = "Type";
 	public static final String XML = ".xml";
 	public static final String UTF_8 = "UTF-8";
+	public static final String PASSWORD = "Password";
+	public static final String USERS_FILE = "UsersFile.xml";
 	
-	public static final int CREATE_AS_TIME = 2000;
+	public static final int CREATE_AS_TIME = 4000;
 }

@@ -31,13 +31,23 @@ public class Client extends MyThread implements IObservable{
 		start();
 	}
 
-	public void sendPlayer(Player player, String password) throws IOException {
-		output.writeUTF(Request.SIGN_IN.toString());
+	private void sendPlayer(Player player, String password) throws IOException {
 		output.writeUTF(player.getName());
+		output.writeUTF(password);
 		output.writeInt(player.getArea().getX());
 		output.writeInt(player.getArea().getY());
 		output.writeInt(player.getArea().getWidth());
 		output.writeInt(player.getArea().getHeight());
+	}
+	
+	public void sendLognIn(Player player, String password) throws IOException {
+		output.writeUTF(Request.LOG_IN.toString());
+		sendPlayer(player, password);
+	}
+	
+	public void sendSignIn(Player player, String password) throws IOException {
+		output.writeUTF(Request.SIGN_IN.toString());
+		sendPlayer(player, password);
 	}
 
 	private void responseManager(String response) throws IOException {
@@ -59,6 +69,15 @@ public class Client extends MyThread implements IObservable{
 			break;
 		case YOU_WIN:
 			iObserver.winGame();
+			break;
+		case INCORRECT_USER:
+			iObserver.incorrectUser();
+			break;
+		case CORRECT_USER:
+			iObserver.correctUser();
+			break;
+		case LIFE:
+			iObserver.setLife(input.readInt());
 			break;
 		}
 	}

@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import model.Area;
 import model.MyThread;
 import model.Player;
-import model.User;
 import persistence.FileManager;
 
 public class Connection extends MyThread implements IObservable {
@@ -39,17 +38,34 @@ public class Connection extends MyThread implements IObservable {
 	private void managerRequest(String response) throws IOException {
 		switch (Request.valueOf(response)) {
 		case LOG_IN:
+			logIn();
 			break;
 		case SIGN_IN:
-			createPlayer();
+			signIn();
 			break;
 		case MOVE_PLAYER:
 			setPosition();
 			break;
 		case CREATE_SHOOT:
-			iObserver.createShoot(input.readInt(), input.readInt());
+			createShoot();
 			break;
 		}
+	}
+	
+	private void createShoot() throws IOException {
+		if (iObserver != null) {
+			iObserver.createShoot(input.readInt(), input.readInt());
+		}
+	}
+
+	private void signIn() throws IOException {
+		String password = createPlayer();
+		iObserver.addPlayer(this, player.getName(), password);
+	}
+
+	private void logIn() throws IOException {
+		String password = createPlayer();
+		iObserver.addLognIn(this, player.getName(), password);
 	}
 
 	private void setPosition() throws IOException {
@@ -57,18 +73,19 @@ public class Connection extends MyThread implements IObservable {
 		player.getArea().setY(input.readInt());
 	}
 
-	private void createPlayer() throws IOException {
-		player = new Player(input.readUTF(),
-				new Area(input.readInt(), input.readInt(), input.readInt(), input.readInt()));
-		advise();
+	private String createPlayer() throws IOException {
+		String name = input.readUTF();
+		String password = input.readUTF();
+		player = new Player(name, new Area(input.readInt(), input.readInt(), input.readInt(), input.readInt()));
+		return password;
 	}
 
-	public void sendPlayers(ArrayList<User> players) {
+	public void sendPlayers(ArrayList<Player> players) {
 		try {
 			output.writeUTF(Response.PLAYERS_INFO.toString());
 			File file = new File(player.getName() + ConstantList.XML);
-			FileManager.saveFile(file, players);;
-			sendFile(file, "");
+			FileManager.saveFile(file, players);
+			sendFile(file);
 			file.delete();
 		} catch (IOException e) {
 			System.err.println(e.getMessage());
@@ -78,25 +95,25 @@ public class Connection extends MyThread implements IObservable {
 	public void sendShoots(File shootFile) {
 		try {
 			output.writeUTF(Response.SHOOTS_INFO.toString());
-			sendFile(shootFile, player.getName());
-		} catch (IOException e) {
-			System.err.println(e.getMessage());
-		}
-	}
-	
-	public void sendAsteroids(File asFile) {
-		try {
-			output.writeUTF(Response.ASTEROIDS_INFO.toString());
-			sendFile(asFile, player.getName());
+			sendFile(shootFile);
 		} catch (IOException e) {
 			System.err.println(e.getMessage());
 		}
 	}
 
-	private void sendFile(File file, String fileName) throws IOException {
+	public void sendAsteroids(File asFile) {
+		try {
+			output.writeUTF(Response.ASTEROIDS_INFO.toString());
+			sendFile(asFile);
+		} catch (IOException e) {
+			System.err.println(e.getMessage());
+		}
+	}
+
+	private void sendFile(File file) throws IOException {
 		byte[] array = new byte[(int) file.length()];
 		readFileBytes(file, array);
-		output.writeUTF(file.getName());
+		output.writeUTF(player.getName() + file.getName());
 		output.writeInt(array.length);
 		output.write(array);
 	}
@@ -115,6 +132,22 @@ public class Connection extends MyThread implements IObservable {
 		}
 	}
 
+	public void incorrectUser() {
+		try {
+			output.writeUTF(Response.INCORRECT_USER.toString());
+		} catch (IOException e) {
+			System.err.println(e.getMessage());
+		}
+	}
+	
+	public void correctUser() {
+		try {
+			output.writeUTF(Response.CORRECT_USER.toString());
+		} catch (IOException e) {
+			System.err.println(e.getMessage());
+		}
+	}
+	
 	@Override
 	public void execute() {
 		String request;
@@ -125,14 +158,18 @@ public class Connection extends MyThread implements IObservable {
 			}
 		} catch (IOException e) {
 			System.err.println(e.getMessage() + "-" + (player != null ? player.getName() : "--"));
+			removeConnection();
 			stop();
+		}
+	}
+	
+	private void removeConnection() {
+		if (iObserver != null) {
 			iObserver.removeConnection(this);
 		}
 	}
-
-	private void advise() {
-		iObserver.addPlayer(this);
-	}
+	
+	
 
 	@Override
 	public void addObserver(IObserver iObserver) {
@@ -140,7 +177,7 @@ public class Connection extends MyThread implements IObservable {
 	}
 
 	@Override
-	public void removeObserver(IObserver observer) {
+	public void removeObserver() {
 		iObserver = null;
 	}
 
@@ -155,10 +192,19 @@ public class Connection extends MyThread implements IObservable {
 			System.err.println(e.getMessage());
 		}
 	}
-	
+
 	public void winMessage() {
 		try {
 			output.writeUTF(Response.YOU_WIN.toString());
+		} catch (IOException e) {
+			System.err.println(e.getMessage());
+		}
+	}
+
+	public void sendLife() {
+		try {
+			output.writeUTF(Response.LIFE.toString());
+			output.writeInt(player.getLife());
 		} catch (IOException e) {
 			System.err.println(e.getMessage());
 		}

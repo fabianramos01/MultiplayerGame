@@ -14,6 +14,7 @@ public class GameManager extends MyThread {
 	private ArrayList<Player> players;
 	private ArrayList<Shoot> shoots;
 	private ArrayList<Asteroid> asteroids;
+	private Timer timer;
 
 	public GameManager() {
 		super("", ConstantList.MANAGER_SLEEP);
@@ -47,7 +48,7 @@ public class GameManager extends MyThread {
 	}
 	
 	public void timerAsteroid() {
-		Timer timer = new Timer(ConstantList.CREATE_AS_TIME, new ActionListener() {
+		timer = new Timer(ConstantList.CREATE_AS_TIME, new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -105,6 +106,17 @@ public class GameManager extends MyThread {
 			return true;
 		}
 		return false;
+	}
+	
+	public void stopGame() {
+		stop();
+		timer.stop();
+		for (Asteroid asteroid : asteroids) {
+			asteroid.stop();
+		}
+		for (Shoot shoot : shoots) {
+			shoot.stop();
+		}
 	}
 
 	public ArrayList<Player> getPlayers() {

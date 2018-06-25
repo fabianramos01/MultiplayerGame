@@ -7,17 +7,26 @@ public class ConstantList {
 	
 	public static final String APP_NAME = "Game";
 	public static final String APP_ICON = "/data/appIcon.png";
-	public static final String PLAYER_IMG = "/data/ship5.png";
+	public static final String SHIP_IMG = "/data/ship5.png";
+	public static final String PLAYER_IMG = "/data/player.png";
 	public static final String SHOOT_IMG = "/data/shoot.png";
-	public static final String LOAD_IMG = "/data/load3.gif";
+	public static final String LOAD_IMG = "/data/load2.gif";
 	public static final String BACKGROUND = "/data/background.jpg";
 	public static final String ASTEROID_IMG = "/data/asteroid.png";
+	public static final String WIN_IMG = "/data/win.jpg";
+	public static final String LOSE_IMG = "/data/gameOver.png";
+	
 	public static final Color APP_COLOR = Color.decode("#136EF1");
+	
 	public static final int WIDTH_FRAME = 900;
 	public static final int HEIGHT_FRAME = 900;
-	public static final int WIDTH_FRAME_S = 300;
-	public static final int HEIGHT_FRAME_S = 400;
+	public static final int WIDTH_FRAME_S = 400;
+	public static final int HEIGHT_FRAME_S = 650;
+	public static final int WIDTH_FRAME_L = 360;
+	public static final int HEIGHT_FRAME_L = 550;
 	
+	public static final int TEXTFIELD_SIZE = 12;
+
 	public static final Font AGENCY_FB = new Font("Agency FB", Font.BOLD, 35);
 	
 	public static final int SLEEP = 20;
@@ -30,9 +39,9 @@ public class ConstantList {
 	public static final String OUT_CONN = "Sin conexión";
 	public static final String EMPTY_FIELDS = "Falta información";
 	public static final String WRONG_PASSWORD = "Contraseña incorrecta";
+	public static final String INVALID_USER = "Usuario invalido";
 	
 	public static final int LIFE = 100;
-	public static final int LESS_LIFE = 5;
 	public static final int MOVE_UNIT = 10;
 	
 	public static final String UTF = "UTF-8";

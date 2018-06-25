@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import model.GameManager;
 import model.MyThread;
 import model.Player;
-import model.User;
 import persistence.FileManager;
 
 public class Game extends MyThread implements IObserver {
@@ -45,11 +44,10 @@ public class Game extends MyThread implements IObserver {
 	}
 
 	private void sendUsers(Connection actual) {
-		ArrayList<User> list = new ArrayList<>();
+		ArrayList<Player> list = new ArrayList<>();
 		for (Connection connection : connections) {
 			if (connection != actual) {
-				Player player = connection.getPlayer();
-				list.add(new User(player.getName(), player.getArea().getX(), player.getArea().getY()));
+				list.add(connection.getPlayer());
 			}
 		}
 		actual.sendPlayers(list);
@@ -64,6 +62,7 @@ public class Game extends MyThread implements IObserver {
 		Connection connection;
 		for (int i = 0; i < connections.size(); i++) {
 			connection = connections.get(i);
+			connection.sendLife();
 			sendUsers(connection);
 			if (!gameManager.getShoots().isEmpty()) {
 				connection.sendShoots(shootFile);
@@ -86,19 +85,25 @@ public class Game extends MyThread implements IObserver {
 
 	@Override
 	public void removeConnection(Connection connection) {
+		connection.removeObserver();
 		connections.remove(connection);
 		if (connections.size() == 1) {
-			connections.get(0).winMessage();
 			stop();
+			connections.get(0).winMessage();
+			gameManager.stopGame();
 		}
-	}
-
-	@Override
-	public void addPlayer(Connection connection) {
 	}
 
 	@Override
 	public void createShoot(int x, int y) {
 		gameManager.addShoot(x, y);
+	}
+
+	@Override
+	public void addPlayer(Connection connection, String name, String password) {
+	}
+
+	@Override
+	public void addLognIn(Connection connection, String name, String password) {
 	}
 }

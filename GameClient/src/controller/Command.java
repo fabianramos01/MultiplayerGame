@@ -4,8 +4,9 @@ import javax.swing.ImageIcon;
 
 public enum Command {
 
-	COMMAND_LOG_ING("COMMAND_LOG_ING", "Ingresar" , ""),
-	COMMAND_SIGN_IN("COMMAND_SIGN_IN", "Registrarse" , "");
+	COMMAND_LOGN_IN("COMMAND_LOGN_IN", "Ingresar" , ""),
+	COMMAND_SIGN_IN("COMMAND_SIGN_IN", "Registrarse" , ""),
+	COMMAND_SIGN_IN_PANEL("COMMAND_SIGN_IN_PANEL", "Registrarse" , "");
 	
 	private String command;
 	private String title;

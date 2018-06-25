@@ -54,6 +54,7 @@ public class Controller implements ActionListener, KeyListener, IObserver {
 	private void connect() {
 		try {
 			client = new Client("", 2000);
+			client.addObserver(this);
 			frameHome = new FrameHome(this);
 		} catch (IOException e) {
 			JOptionPane.showMessageDialog(null, ConstantList.CONNECTION_ERROR, ConstantList.ERROR,
@@ -62,11 +63,11 @@ public class Controller implements ActionListener, KeyListener, IObserver {
 	}
 
 	private void newPlayer() {
-		String[] info = frameHome.getInfo();
+		String[] info = frameHome.signInInfo();
 		if (!areEmptyFields(info)) {
 			validatePassword(info);
 		} else {
-			JOptionPane.showMessageDialog(null, ConstantList.EMPTY_FIELDS, ConstantList.ERROR,
+			JOptionPane.showMessageDialog(frameHome, ConstantList.EMPTY_FIELDS, ConstantList.ERROR,
 					JOptionPane.ERROR_MESSAGE);
 		}
 	}
@@ -75,11 +76,10 @@ public class Controller implements ActionListener, KeyListener, IObserver {
 		try {
 			if (info[1].equals(info[2])) {
 				managerGame = new ManagerGame(info[0]);
-				client.sendPlayer(managerGame.getPlayer(), info[1]);
-				client.addObserver(this);
+				client.sendSignIn(managerGame.getPlayer(), info[1]);
 				frameHome.showDialog();
 			} else {
-				JOptionPane.showMessageDialog(null, ConstantList.WRONG_PASSWORD, ConstantList.ERROR,
+				JOptionPane.showMessageDialog(frameHome, ConstantList.WRONG_PASSWORD, ConstantList.ERROR,
 						JOptionPane.ERROR_MESSAGE);
 			}
 		} catch (IOException e) {
@@ -96,13 +96,32 @@ public class Controller implements ActionListener, KeyListener, IObserver {
 		return false;
 	}
 
+	private void lognIn() {
+		String[] info = frameHome.lognInInfo();
+		try {
+			if (!areEmptyFields(info)) {
+				managerGame = new ManagerGame(info[0]);
+				client.sendLognIn(managerGame.getPlayer(), info[1]);
+			} else {
+				JOptionPane.showMessageDialog(frameHome, ConstantList.EMPTY_FIELDS, ConstantList.ERROR,
+						JOptionPane.ERROR_MESSAGE);
+			}
+		} catch (IOException e) {
+			System.err.println(e.getMessage());
+		}
+	}
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		switch (Command.valueOf(e.getActionCommand())) {
-		case COMMAND_LOG_ING:
+		case COMMAND_LOGN_IN:
+			lognIn();
 			break;
 		case COMMAND_SIGN_IN:
 			newPlayer();
+			break;
+		case COMMAND_SIGN_IN_PANEL:
+			frameHome.panelSignIn();
 			break;
 		}
 	}
@@ -162,11 +181,29 @@ public class Controller implements ActionListener, KeyListener, IObserver {
 
 	@Override
 	public void loseGame() {
-		// TODO Auto-generated method stub
+		timer.stop();
+		frameHome.loseMessage();
 	}
 
 	@Override
 	public void winGame() {
-		// TODO Auto-generated method stub
+		timer.stop();
+		frameHome.winMessage();
+	}
+
+	@Override
+	public void correctUser() {
+		frameHome.showDialog();
+	}
+
+	@Override
+	public void incorrectUser() {
+		JOptionPane.showMessageDialog(frameHome, ConstantList.INVALID_USER, ConstantList.ERROR,
+				JOptionPane.ERROR_MESSAGE);
+	}
+
+	@Override
+	public void setLife(int life) {
+		frameHome.setLife(life);
 	}
 }

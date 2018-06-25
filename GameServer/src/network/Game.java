@@ -90,6 +90,7 @@ public class Game extends MyThread implements IObserver {
 	@Override
 	public void removeConnection(Connection connection) {
 		connection.removeObserver();
+		gameManager.removePlayer(connection.getPlayer());
 		connections.remove(connection);
 		if (connections.size() == 1) {
 			stop();

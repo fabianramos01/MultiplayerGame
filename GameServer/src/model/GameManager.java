@@ -118,6 +118,10 @@ public class GameManager extends MyThread {
 			shoot.stop();
 		}
 	}
+	
+	public void removePlayer(Player player) {
+		players.remove(player);
+	}
 
 	public ArrayList<Player> getPlayers() {
 		return players;

@@ -34,6 +34,11 @@ public class ManagerGame {
 				setInfo(user);
 			}
 		}
+		for (int i = 0; i < users.size(); i++) {
+			if (!userExist(users.get(i), players)) {
+				users.remove(i);
+			}
+		}
 	}
 
 	private void setInfo(User player) {
@@ -44,6 +49,15 @@ public class ManagerGame {
 				break;
 			}
 		}
+	}
+	
+	private boolean userExist(User user, ArrayList<User> userList) {
+		for (User acUser : userList) {
+			if (acUser.getName().equals(user.getName())) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public void loadShoots(ArrayList<Shoot> shootList) {
